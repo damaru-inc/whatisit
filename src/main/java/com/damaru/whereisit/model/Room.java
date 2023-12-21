@@ -8,8 +8,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Entity(name="room")
+@Table(uniqueConstraints = @UniqueConstraint(name="uniqueName", columnNames = "name"))
 public class Room {
 
     @Id

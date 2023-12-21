@@ -49,5 +49,5 @@ public class PersistenceIT {
         log.info(room.getName() + " was persisted with id " + room.getId());
 
     }
-
+    
 }
