@@ -19,14 +19,14 @@ public class DataProducer {
     private Logger log;
 
     @Inject
-    private DAO dao;
+    private Repository repository;
     
     private List<Room> rooms;
     
     @PostConstruct
     public void init() {
         log.info("Called init.");
-        rooms = dao.findAllRooms();
+        rooms = repository.findAllRooms();
     }
     
     public void afterRoomUpdate(@Observes Room room) {
@@ -37,7 +37,7 @@ public class DataProducer {
     @Produces
     @Named
     public List<Room> getRooms() {
-        log.info("Called getRooms.");
+        //log.info("Called getRooms.");
         return rooms;
     }
 

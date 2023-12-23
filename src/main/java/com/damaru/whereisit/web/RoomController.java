@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.damaru.whereisit.model.Room;
-import com.damaru.whereisit.service.DAO;
+import com.damaru.whereisit.service.Repository;
 
 @Model
 public class RoomController {
@@ -19,7 +19,7 @@ public class RoomController {
     private Logger log;
 
     @Inject
-    private DAO dao;
+    private Repository repository;
     
     @Inject
     private FacesContext facesContext;
@@ -31,7 +31,7 @@ public class RoomController {
     public String create() {
         try {
             log.info("Saving " + newRoom);
-            dao.save(newRoom);
+            repository.save(newRoom);
             String message = "A new room with id " + newRoom.getId() + " has been created successfully";
             facesContext.addMessage(null, new FacesMessage(message));
             newRoom = new Room();

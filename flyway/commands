@@ -1,0 +1,2 @@
+\copy room to '/Users/mike/dev/whereisit/flyway/room.sql' delimiter ',' csv header;
+SELECT setval('payments_id_seq', 21, true);  -- next value will be 22

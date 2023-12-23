@@ -16,14 +16,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.damaru.whereisit.model.Room;
-import com.damaru.whereisit.service.DAO;
+import com.damaru.whereisit.service.Repository;
 import com.damaru.whereisit.util.Resources;
 
 @RunWith(Arquillian.class)
 public class PersistenceIT {
 
     @Inject
-    DAO dao;
+    Repository repository;
 
     @Inject
     Logger log;
@@ -31,7 +31,7 @@ public class PersistenceIT {
     @Deployment
     public static Archive<?> createTestArchive() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war")
-                .addClasses(Room.class, DAO.class, Resources.class)
+                .addClasses(Room.class, Repository.class, Resources.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 // Deploy our test datasource
@@ -44,7 +44,7 @@ public class PersistenceIT {
     public void testSaveRoom() {
         Room room = new Room();
         room.setName("Living Room");
-        dao.save(room);
+        repository.save(room);
         assertNotNull(room.getId());
         log.info(room.getName() + " was persisted with id " + room.getId());
 

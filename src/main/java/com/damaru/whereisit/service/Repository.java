@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import com.damaru.whereisit.model.Room;
 
 @Stateless
-public class DAO {
+public class Repository {
 
     @Inject
     private Logger log;
