@@ -12,6 +12,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,6 +40,13 @@ public class PersistenceIT {
         System.out.println(archive.toString(true));
         return archive;
     }
+    
+    
+    @Before
+    public void reset() {
+        log.info("Resetting.");
+        repository.cleanDb();
+    }
 
     @Test
     public void testSaveRoom() {
@@ -47,7 +55,15 @@ public class PersistenceIT {
         repository.save(room);
         assertNotNull(room.getId());
         log.info(room.getName() + " was persisted with id " + room.getId());
-
     }
-    
+
+    @Test
+    public void testSaveContainer() {
+        Room room = new Room();
+        room.setName("Living Room");
+        repository.save(room);
+        assertNotNull(room.getId());
+        log.info(room.getName() + " was persisted with id " + room.getId());
+    }
+
 }
