@@ -22,18 +22,21 @@
     template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
 
-        <h:form id="roomForm">
+        <h:form id="containerForm">
             <h2>New Container</h2>
-            <h:panelGrid columns="3" columnClasses="titleCell">
+            <h:panelGrid columns="4" columnClasses="titleCell" width="800">
                 <h:outputLabel for="name" value="Name:" />
-                <h:inputText id="name" value="#{newRoom.name}" />
-                <h:message for="name" errorClass="invalid" />
+                <h:inputText id="name" value="#{newContainer.name}" maxlength="128" size="60"/>
+                <h:outputLabel for="room" value="Room:" />
+                <h:selectOneMenu id="room" value="#{containerController.selectedRoomId}" styleClass="roomSelector">
+                    <f:selectItems value="#{rooms}" var="room" itemValue="#{room.id}" itemLabel="#{room.name}"/>
+                </h:selectOneMenu>
             </h:panelGrid>
-
+            
             <p>
                 <h:panelGrid columns="2">
-                    <h:commandButton id="addRoom"
-                        action="#{roomController.create}"
+                    <h:commandButton id="addContainer"
+                        action="#{containerController.create}"
                         value="Add" styleClass="register">
                         </h:commandButton>
                     <h:messages styleClass="messages"
@@ -43,29 +46,24 @@
             </p>
         </h:form>
         <h2>Containers</h2>
-        <h:panelGroup rendered="#{empty rooms}">
+        <h:panelGroup rendered="#{empty containers}">
             <em>No containers.</em>
         </h:panelGroup>
-        <h:dataTable id="roomTable" var="room" value="#{rooms}"
-            rendered="#{not empty rooms}"
+        <h:dataTable id="containerTable" var="container" value="#{containers}"
+            rendered="#{not empty containers}"
             styleClass="simpletablestyle">
             <h:column>
                 <f:facet name="header">Id</f:facet>
-                #{room.id}
+                #{container.id}
             </h:column>
             <h:column>
                 <f:facet name="header">Name</f:facet>
-                #{room.name}
+                #{container.name}
             </h:column>
             <h:column>
-                <f:facet name="header">REST URL</f:facet>
-                <a
-                    href="#{request.contextPath}/rest/rooms/#{_member.id}">/rest/rooms/#{room.id}</a>
+                <f:facet name="header">Room</f:facet>
+                #{container.room.name}
             </h:column>
-            <f:facet name="footer">
-            REST URL for all containers: <a
-                    href="#{request.contextPath}/rest/rooms">/rest/rooms</a>
-            </f:facet>
         </h:dataTable>
     </ui:define>
 </ui:composition>

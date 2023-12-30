@@ -22,7 +22,7 @@ public class Room {
     private Long id;
 
     @NotNull
-    @Size(min = 1, max = 25)
+    @Size(min = 1, max = 128)
     private String name;
 
     public Long getId() {

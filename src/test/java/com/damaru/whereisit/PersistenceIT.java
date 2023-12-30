@@ -87,26 +87,41 @@ public class PersistenceIT {
     }
     
     
+    // This also tests that we can have different containers with the same name,
+    // as long as they're in different rooms.
     @Test
     public void testFetchContainersByRoom() {
-        Room room = new Room();
-        room.setName("Living Room");
-        repository.save(room);
+        Room livingRoom = new Room();
+        livingRoom.setName("Living Room");
+        repository.save(livingRoom);
         
         Container desk = new Container();
         desk.setName("Desk");
-        desk.setRoom(room);
+        desk.setRoom(livingRoom);
         repository.save(desk);
         
-        Container cabinet = new Container();
-        cabinet.setName("Cabinet");
-        cabinet.setRoom(room);
-        repository.save(cabinet);
+        Container livingRoomCabinet = new Container();
+        livingRoomCabinet.setName("Cabinet");
+        livingRoomCabinet.setRoom(livingRoom);
+        repository.save(livingRoomCabinet);
         
-        List<Container> containers = repository.findContainersByRoom(room);
+        List<Container> containers = repository.findContainersByRoom(livingRoom);
         assertEquals(2, containers.size());
-        assertEquals(cabinet, containers.get(0));
+        assertEquals(livingRoomCabinet, containers.get(0));
         assertEquals(desk, containers.get(1));
+        
+        Room bedroom = new Room();
+        bedroom.setName("Bedroom");
+        repository.save(bedroom);
+        
+        Container bedroomCabinet = new Container();
+        bedroomCabinet.setName("Cabinet");
+        bedroomCabinet.setRoom(bedroom);
+        repository.save(bedroomCabinet);
+        
+        containers = repository.findContainersByRoom(bedroom);
+        assertEquals(1, containers.size());
+        assertEquals(bedroomCabinet, containers.get(0));
     }
 
 }

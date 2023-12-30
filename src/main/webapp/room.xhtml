@@ -24,10 +24,9 @@
 
         <h:form id="roomForm">
             <h2>New Room</h2>
-            <h:panelGrid columns="3" columnClasses="titleCell">
+            <h:panelGrid columns="2" columnClasses="titleCell">
                 <h:outputLabel for="name" value="Name:" />
-                <h:inputText id="name" value="#{newRoom.name}" />
-                <h:message for="name" errorClass="invalid" />
+                <h:inputText id="name" value="#{newRoom.name}" maxlength="128" size="60"/>
             </h:panelGrid>
 
             <p>
@@ -57,15 +56,6 @@
                 <f:facet name="header">Name</f:facet>
                 #{room.name}
             </h:column>
-            <h:column>
-                <f:facet name="header">REST URL</f:facet>
-                <a
-                    href="#{request.contextPath}/rest/rooms/#{_member.id}">/rest/rooms/#{room.id}</a>
-            </h:column>
-            <f:facet name="footer">
-            REST URL for all rooms: <a
-                    href="#{request.contextPath}/rest/rooms">/rest/rooms</a>
-            </f:facet>
         </h:dataTable>
     </ui:define>
 </ui:composition>

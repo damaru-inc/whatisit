@@ -89,4 +89,9 @@ public class Repository {
         log.info(String.format("Deleted %d rows from %s", deleted, tableName));
     }
 
+    public Room findRoomById(Long selectedRoomId) {
+        Room room = em.find(Room.class, selectedRoomId);
+        return room;
+    }
+
 }
