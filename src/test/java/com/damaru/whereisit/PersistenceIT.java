@@ -107,7 +107,6 @@ public class PersistenceIT {
         assertEquals(2, containers.size());
         assertEquals(cabinet, containers.get(0));
         assertEquals(desk, containers.get(1));
-        
     }
 
 }

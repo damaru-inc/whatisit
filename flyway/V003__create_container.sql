@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS public.container
     room_id bigint references room,
     name character varying(25) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT container_pkey PRIMARY KEY (id),
-    CONSTRAINT container_uniquename UNIQUE (name)
+    CONSTRAINT container_unique_room_name UNIQUE (room_id, name)
 )
 
 TABLESPACE pg_default;
