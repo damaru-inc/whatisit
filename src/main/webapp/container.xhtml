@@ -26,7 +26,7 @@
             <h2>New Container</h2>
             <h:panelGrid columns="4" columnClasses="titleCell" width="800">
                 <h:outputLabel for="name" value="Name:" />
-                <h:inputText id="name" value="#{newContainer.name}" maxlength="128" size="60"/>
+                <h:inputText id="name" value="#{containerController.newContainer.name}" maxlength="128" size="60"/>
                 <h:outputLabel for="room" value="Room:" />
                 <h:selectOneMenu id="room" value="#{containerController.selectedRoomId}" styleClass="roomSelector">
                     <f:selectItems value="#{rooms}" var="room" itemValue="#{room.id}" itemLabel="#{room.name}"/>
