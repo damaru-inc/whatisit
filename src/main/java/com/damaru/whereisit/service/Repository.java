@@ -12,12 +12,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import com.damaru.whereisit.model.Container;
 import com.damaru.whereisit.model.Room;
 
 @Stateless
 public class Repository {
     
     private static final String COLUMN_NAME = "name";
+
+    private static final String TABLE_CONTAINER = "container";
     private static final String TABLE_ROOM = "room";
 
     @Inject
@@ -29,13 +32,39 @@ public class Repository {
     @Inject
     private Event<Room> roomEvent;
 
+    @Inject
+    private Event<Container> containerEvent;
+
+    public void save(Container container) {
+        em.persist(container);
+        em.flush();
+        containerEvent.fire(container);
+        log.info("Saved " + container);
+    }
+    
     public void save(Room room) {
-        log.info("Saving " + room);
         em.persist(room);
-        log.info("After persist " + room);
         em.flush();
         roomEvent.fire(room);
         log.info("Saved " + room);
+    }
+
+    public List<Container> findAllContainers() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Container> criteria = cb.createQuery(Container.class);
+        Root<Container> container = criteria.from(Container.class);
+        criteria.select(container).orderBy(cb.asc(container.get(COLUMN_NAME)));
+        return em.createQuery(criteria).getResultList();
+    }
+    
+    public List<Container> findContainersByRoom(Room room) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Container> criteria = cb.createQuery(Container.class);
+        Root<Container> container = criteria.from(Container.class);
+        criteria.select(container)
+            .where(cb.equal(container.get("room"), room))
+            .orderBy(cb.asc(container.get(COLUMN_NAME)));
+        return em.createQuery(criteria).getResultList();
     }
     
     public List<Room> findAllRooms() {
@@ -50,6 +79,7 @@ public class Repository {
     }
     
     public void cleanDb() {
+        deleteTable(TABLE_CONTAINER);
         deleteTable(TABLE_ROOM);
     }
 

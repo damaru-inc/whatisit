@@ -6,24 +6,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity(name="room")
+@Entity(name="container")
 @Table()
-public class Room {
+public class Container {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="room_seq")
-    @SequenceGenerator(name="room_seq",sequenceName="room_sequence", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="container_seq")
+    @SequenceGenerator(name="container_seq",sequenceName="container_sequence", allocationSize=1)
     private Long id;
 
     @NotNull
     @Size(min = 1, max = 25)
     private String name;
+    
+    @NotNull
+    @ManyToOne
+    private Room room;
 
     public Long getId() {
         return id;
@@ -42,9 +47,17 @@ public class Room {
         this.name = name;
     }
     
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public String toString() {
-        return String.format("[Room %3d %s]", id, name);
+        return String.format("[Container %3d %s in %s]", id, name, (room == null ? "Null room" : room.toString()));
     }
 
     @Override
@@ -60,7 +73,7 @@ public class Room {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Room other = (Room) obj;
+        Container other = (Container) obj;
         return Objects.equals(id, other.id);
     }
 
