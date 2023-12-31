@@ -14,12 +14,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="container")
-public class Container implements Saveable {
+@Table(name="item")
+public class Item implements Saveable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="container_seq")
-    @SequenceGenerator(name="container_seq",sequenceName="container_sequence", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="item_seq")
+    @SequenceGenerator(name="item_seq",sequenceName="item_sequence", allocationSize=1)
     private Long id;
 
     @NotNull
@@ -28,7 +28,7 @@ public class Container implements Saveable {
     
     @NotNull
     @ManyToOne
-    private Room room;
+    private Container container;
 
     public Long getId() {
         return id;
@@ -46,17 +46,17 @@ public class Container implements Saveable {
         this.name = name;
     }
     
-    public Room getRoom() {
-        return room;
+    public Container getContainer() {
+        return container;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setContainer(Container container) {
+        this.container = container;
     }
 
     @Override
     public String toString() {
-        return String.format("[Container %3d %s in %s]", id, name, (room == null ? "Null room" : room.toString()));
+        return String.format("[Item %3d %s in %s]", id, name, (container == null ? "Null container" : container.toString()));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Container implements Saveable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Container other = (Container) obj;
+        Item other = (Item) obj;
         return Objects.equals(id, other.id);
     }
 

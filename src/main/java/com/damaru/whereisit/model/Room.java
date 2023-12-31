@@ -12,9 +12,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity(name="room")
-@Table()
-public class Room {
+@Entity
+@Table(name="room")
+public class Room implements Saveable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="room_seq")

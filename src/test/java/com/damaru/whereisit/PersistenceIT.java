@@ -19,7 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.damaru.whereisit.model.Container;
+import com.damaru.whereisit.model.Item;
 import com.damaru.whereisit.model.Room;
+import com.damaru.whereisit.model.Saveable;
 import com.damaru.whereisit.service.Repository;
 import com.damaru.whereisit.util.Resources;
 
@@ -35,10 +37,15 @@ public class PersistenceIT {
     @Deployment
     public static Archive<?> createTestArchive() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war")
-                .addClasses(Container.class, Room.class, Repository.class, Resources.class)
+                .addClasses(
+                        Container.class,
+                        Item.class,
+                        Repository.class,
+                        Resources.class,
+                        Room.class,
+                        Saveable.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml");
         System.out.println(archive.toString(true));
         return archive;
@@ -122,6 +129,34 @@ public class PersistenceIT {
         containers = repository.findContainersByRoom(bedroom);
         assertEquals(1, containers.size());
         assertEquals(bedroomCabinet, containers.get(0));
+    }
+    
+    @Test
+    public void testCreateItemsAndSearch() {
+        Room room = new Room();
+        room.setName("Living Room");
+        repository.save(room);
+        
+        Container desk = new Container();
+        desk.setName("Desk");
+        desk.setRoom(room);
+        repository.save(desk);
+
+        Container cabinet = new Container();
+        cabinet.setName("Cabinet");
+        cabinet.setRoom(room);
+        repository.save(cabinet);
+        
+        Item pen = new Item();
+        pen.setName("Fountain Pen");
+        pen.setContainer(desk);
+        repository.save(pen);
+        
+        List<Item> items = repository.searchItems("pen");
+        assertEquals(1, items.size());
+        Item item = items.get(0);
+        assertEquals(pen, item);
+        assertEquals(desk, item.getContainer());
     }
 
 }
