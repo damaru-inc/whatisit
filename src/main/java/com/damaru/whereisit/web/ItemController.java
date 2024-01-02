@@ -1,5 +1,6 @@
 package com.damaru.whereisit.web;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.enterprise.inject.Model;
@@ -27,7 +28,9 @@ public class ItemController {
     
     private Long selectedContainerId = 0L;
     
-    private Long selectedRoomId = 0L;
+    private List<Item> searchResults;
+    
+    private String searchString;
     
     public String create() {
         log.info("Saving item " + newItem + " with containerId " + selectedContainerId);
@@ -39,6 +42,10 @@ public class ItemController {
         newItem = new Item();
         return "item";
     }
+    
+    public void search() {
+        searchResults = repository.searchItems(searchString);
+    }
 
     public Item getNewItem() {
         return newItem;
@@ -46,6 +53,18 @@ public class ItemController {
 
     public void setNewItem(Item newItem) {
         this.newItem = newItem;
+    }
+
+    public List<Item> getSearchResults() {
+        return searchResults;
+    }
+
+    public String getSearchString() {
+        return searchString;
+    }
+
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
     }
 
     public Long getSelectedContainerId() {
@@ -56,11 +75,4 @@ public class ItemController {
         this.selectedContainerId = selectedContainerId;
     }
 
-    public Long getSelectedRoomId() {
-        return selectedRoomId;
-    }
-
-    public void setSelectedRoomId(Long selectedRoomId) {
-        this.selectedRoomId = selectedRoomId;
-    }
 }
