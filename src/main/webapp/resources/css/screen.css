@@ -44,6 +44,10 @@ body {
   margin: 20px;
 }
 
+.containerSelector {
+  width: 30em;
+}
+
 .roomSelector {
   width: 20em;
 }

@@ -78,6 +78,14 @@ public class Repository {
         return em.createQuery(criteria).getResultList();
     }
     
+    public List<Item> findAllItems() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Item> criteria = cb.createQuery(Item.class);
+        Root<Item> container = criteria.from(Item.class);
+        criteria.select(container).orderBy(cb.asc(container.get(PROPERTY_NAME)));
+        return em.createQuery(criteria).getResultList();
+    }
+    
     public List<Room> findAllRooms() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> criteria = cb.createQuery(Room.class);
@@ -117,6 +125,11 @@ public class Repository {
     public Room findRoomById(Long selectedRoomId) {
         Room room = em.find(Room.class, selectedRoomId);
         return room;
+    }
+
+    public Container findContainerById(Long selectedContainerId) {
+        Container container = em.find(Container.class, selectedContainerId);
+        return container;
     }
 
 }

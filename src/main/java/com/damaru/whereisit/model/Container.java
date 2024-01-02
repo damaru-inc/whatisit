@@ -53,10 +53,18 @@ public class Container implements Saveable {
     public void setRoom(Room room) {
         this.room = room;
     }
+    
+    private String getRoomName() {
+        return room == null ? "Null room" : room.getName();
+    }
+    
+    public String getFullName() {
+        return name + ": " + getRoomName();
+    }
 
     @Override
     public String toString() {
-        return String.format("[Container %3d %s in %s]", id, name, (room == null ? "Null room" : room.toString()));
+        return String.format("[Container %3d %s in %s]", id, name, getRoomName());
     }
 
     @Override

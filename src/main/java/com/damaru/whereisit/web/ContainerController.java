@@ -13,6 +13,7 @@ import com.damaru.whereisit.service.Repository;
 
 @Model
 public class ContainerController {
+    
     @Inject
     private Logger log;
 

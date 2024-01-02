@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.damaru.whereisit.model.Container;
+import com.damaru.whereisit.model.Item;
 import com.damaru.whereisit.model.Room;
 
 @RequestScoped
@@ -23,17 +24,24 @@ public class DataProducer {
     private Repository repository;
     
     private List<Container> containers;
+    private List<Item> items;
     private List<Room> rooms;
     
     @PostConstruct
     public void init() {
         log.info("Called init.");
         containers = repository.findAllContainers();
+        items = repository.findAllItems();
         rooms = repository.findAllRooms();
     }
     
     public void afterContainerUpdate(@Observes Container container) {
         log.info("afterRoomUpdate " + container);
+        init();
+    }
+    
+    public void afterItemUpdate(@Observes Item item) {
+        log.info("afterItemUpdate " + item);
         init();
     }
     
@@ -47,6 +55,13 @@ public class DataProducer {
     public List<Container> getContainers() {
         log.info("Called getContainers.");
         return containers;
+    }
+
+    @Produces
+    @Named
+    public List<Item> getItems() {
+        log.info("Called getContainers.");
+        return items;
     }
 
     @Produces
