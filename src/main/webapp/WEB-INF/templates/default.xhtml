@@ -12,18 +12,37 @@
 <h:body>
     <div id="container">
         <h1>Where Is It?</h1>
-        <div>
-        <h:link outcome="/home.xhtml">Home</h:link>
+        
+        <div class="menu">
+            <div class="menuItem">
+            <h:link outcome="/home.xhtml">Search</h:link>
+            </div>
+            <div class="menuItem">
+            <h:link outcome="/room.xhtml">Rooms</h:link>
+            </div>
+            <div class="menuItem">
+            <h:link outcome="/container.xhtml">Containers</h:link>
+            </div>
+            <div class="menuItem">
+            <h:link outcome="/item.xhtml">Items</h:link>
+            </div>
         </div>
-        <div>
-        <h:link outcome="/room.xhtml">Rooms</h:link>
-        </div>
-        <div>
-        <h:link outcome="/container.xhtml">Containers</h:link>
-        </div>
-        <div>
-        <h:link outcome="/item.xhtml">Items</h:link>
-        </div>
+        <!-- 
+        <ul class="menu">
+	        <li class="menuItem">
+	        <h:link outcome="/home.xhtml">Search</h:link>
+	        </li>
+	        <li class="menuItem">
+	        <h:link outcome="/room.xhtml">Rooms</h:link>
+	        </li>
+	        <li class="menuItem">
+	        <h:link outcome="/container.xhtml">Containers</h:link>
+	        </li>
+	        <li class="menuItem">
+	        <h:link outcome="/item.xhtml">Items</h:link>
+	        </li>
+        </ul>
+         -->
         <div id="content">
             <ui:insert name="content">
                     [Template content will be inserted here]
@@ -31,7 +50,7 @@
         </div>
         <div id="footer">
             <p>
-                Brought to you by Damaru Inc.<br />
+                Brought to you by Damaru Inc.<br/>
             </p>
         </div>
     </div>
