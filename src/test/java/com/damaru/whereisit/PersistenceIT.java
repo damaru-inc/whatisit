@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -50,7 +51,7 @@ public class PersistenceIT {
         System.out.println(archive.toString(true));
         return archive;
     }
-    
+
     
     @Before
     public void reset() {
@@ -157,6 +158,39 @@ public class PersistenceIT {
         Item item = items.get(0);
         assertEquals(pen, item);
         assertEquals(desk, item.getContainer());
+    }
+    
+    // This was written to test the item.name index.
+    //@Test
+    public void makeLotsOfRecords() {
+        Room room = new Room();
+        room.setName(nextName());
+        repository.save(room);
+        
+        Container desk = new Container();
+        desk.setName(nextName());
+        desk.setRoom(room);
+        repository.save(desk);
+        repository.flush();
+        
+        for (int i = 0; i < 1000; i++) {
+            Item pen = new Item();
+            pen.setName(nextName());
+            pen.setContainer(desk);
+            repository.save(pen);
+        }
+        List<Item> items = repository.searchItems("abc");
+        log.info("Results: " + items);
+    }
+    
+    private String nextName() {
+        String chars = "abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        Random r = new Random();
+        StringBuilder st = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            st.append(chars.charAt(r.nextInt(chars.length())));
+        }
+        return st.toString();
     }
 
 }

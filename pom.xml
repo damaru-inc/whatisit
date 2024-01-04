@@ -7,7 +7,7 @@
     <artifactId>whereisit</artifactId>
     <version>0.0.1</version>
     <packaging>war</packaging>
-    <name>Where is it</name>
+    <name>Where Is It?</name>
     <description>An app that says where stuff is.</description>
 
     <licenses>

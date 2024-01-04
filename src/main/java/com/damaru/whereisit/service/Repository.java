@@ -48,7 +48,7 @@ public class Repository {
     public void save(Saveable saveable) {
         em.persist(saveable);
         em.flush();
-        
+
         if (saveable instanceof Container) {
             containerEvent.fire((Container) saveable);
         } else if (saveable instanceof Item) {
@@ -58,6 +58,10 @@ public class Repository {
         }
         
         log.info("Saved " + saveable);
+    }
+    
+    public void flush() {
+        em.flush();
     }
     
     public List<Container> findAllContainers() {
@@ -98,12 +102,12 @@ public class Repository {
     }
     
     public List<Item> searchItems(String searchString) {
-        String search = "%" + searchString.toUpperCase() + "%";
+        String search = "%" + searchString.toLowerCase() + "%";
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Item> criteria = cb.createQuery(Item.class);
         Root<Item> root = criteria.from(Item.class);
         Path<String> namePath = root.get(PROPERTY_NAME);
-        Expression<String> upperName = cb.upper(namePath);
+        Expression<String> upperName = cb.lower(namePath);
         criteria.select(root)
             .where(cb.like(upperName, search))
             .orderBy(cb.asc(root.get(PROPERTY_NAME)));
