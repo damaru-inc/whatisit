@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -16,6 +17,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -160,8 +162,10 @@ public class PersistenceIT {
         assertEquals(desk, item.getContainer());
     }
     
+
     // This was written to test the item.name index.
-    //@Test
+    @Ignore
+    @Test
     public void makeLotsOfRecords() {
         Room room = new Room();
         room.setName(nextName());
@@ -180,11 +184,13 @@ public class PersistenceIT {
             repository.save(pen);
         }
         List<Item> items = repository.searchItems("abc");
+        items.stream().close();
         log.info("Results: " + items);
     }
     
     private String nextName() {
         String chars = "abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
         Random r = new Random();
         StringBuilder st = new StringBuilder();
         for (int i = 0; i < 8; i++) {
