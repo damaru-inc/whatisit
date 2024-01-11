@@ -8,11 +8,6 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
 
 import com.damaru.whereisit.model.Container;
 import com.damaru.whereisit.model.Item;
@@ -22,9 +17,6 @@ import com.damaru.whereisit.model.Saveable;
 @Stateless
 public class Repository {
     
-    private static final String PROPERTY_NAME = "name";
-    private static final String PROPERTY_ROOM = "room";
-
     private static final String ENTITY_CONTAINER = "Container";
     private static final String ENTITY_ITEM = "Item";
     private static final String ENTITY_ROOM = "Room";
@@ -64,54 +56,39 @@ public class Repository {
         em.flush();
     }
     
+    @SuppressWarnings("unchecked")
     public List<Container> findAllContainers() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Container> criteria = cb.createQuery(Container.class);
-        Root<Container> container = criteria.from(Container.class);
-        criteria.select(container).orderBy(cb.asc(container.get(PROPERTY_NAME)));
-        return em.createQuery(criteria).getResultList();
+        String jpql = "select c from Container c order by name";
+        return em.createQuery(jpql).getResultList();
     }
     
+    @SuppressWarnings("unchecked")
     public List<Container> findContainersByRoom(Room room) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Container> criteria = cb.createQuery(Container.class);
-        Root<Container> container = criteria.from(Container.class);
-        criteria.select(container)
-            .where(cb.equal(container.get(PROPERTY_ROOM), room))
-            .orderBy(cb.asc(container.get(PROPERTY_NAME)));
-        return em.createQuery(criteria).getResultList();
+        String jpql = "select c from Container c where c.room = :room order by name";
+        return em.createQuery(jpql)
+                .setParameter("room", room)
+                .getResultList();
     }
     
+    @SuppressWarnings("unchecked")
     public List<Item> findAllItems() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Item> criteria = cb.createQuery(Item.class);
-        Root<Item> container = criteria.from(Item.class);
-        criteria.select(container).orderBy(cb.asc(container.get(PROPERTY_NAME)));
-        return em.createQuery(criteria).getResultList();
+        String jpql = "select i from Item i order by name";
+        return em.createQuery(jpql).getResultList();
     }
     
+    @SuppressWarnings("unchecked")
     public List<Room> findAllRooms() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Room> criteria = cb.createQuery(Room.class);
-        Root<Room> room = criteria.from(Room.class);
-        // Swap criteria statements if you would like to try out type-safe criteria queries, a new
-        // feature in JPA 2.0
-        //criteria.select(member).orderBy(cb.asc(member.get(Room.name)));
-        criteria.select(room).orderBy(cb.asc(room.get(PROPERTY_NAME)));
-        return em.createQuery(criteria).getResultList();
+        String jpql = "select r from Room r order by name";
+        return em.createQuery(jpql).getResultList();
     }
     
+    @SuppressWarnings("unchecked")
     public List<Item> searchItems(String searchString) {
         String search = "%" + searchString.toLowerCase() + "%";
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Item> criteria = cb.createQuery(Item.class);
-        Root<Item> root = criteria.from(Item.class);
-        Path<String> namePath = root.get(PROPERTY_NAME);
-        Expression<String> upperName = cb.lower(namePath);
-        criteria.select(root)
-            .where(cb.like(upperName, search))
-            .orderBy(cb.asc(root.get(PROPERTY_NAME)));
-        return em.createQuery(criteria).getResultList();        
+        String jpql = "select i from Item i where lower(name) like :search order by name";
+        return em.createQuery(jpql)
+                .setParameter("search", search)
+                .getResultList();
     }
     
     public void cleanDb() {
