@@ -1,1 +1,2 @@
 mvn clean wildfly:deploy
+#mvn clean wildfly:deploy -DskipTests

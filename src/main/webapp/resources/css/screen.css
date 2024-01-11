@@ -77,6 +77,24 @@ body {
   float: right;
   padding-right: 10px;
 }
+
+#messages {
+  clear: both;
+  color: #666666;
+}
+
+.info {
+  
+}
+
+.warning {
+  color: pink;
+}
+
+.error {
+  color: red;
+}
+
 #footer {
   clear: both;
   text-align: center;
@@ -108,11 +126,6 @@ h4 {
 h5 {
 }
 h6 {
-}
-/* Member registration styles */
-span.invalid {
-  padding-left: 3px;
-  color: red;
 }
 form {
   padding: 1em;

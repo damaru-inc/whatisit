@@ -37,8 +37,7 @@ public class ContainerController {
             facesContext.addMessage(null, new FacesMessage(message));
             newContainer = new Container();
         } catch (Exception e) {
-            String message = "An error has occured while creating the container (see log for details)";
-            facesContext.addMessage(null, new FacesMessage(message));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while creating the container.", e.getMessage()));
         }
         return "container";
     }

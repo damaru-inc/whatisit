@@ -34,12 +34,16 @@ public class ItemController {
     
     public String create() {
         log.info("Saving item " + newItem + " with containerId " + selectedContainerId);
-        Container container = repository.findContainerById(selectedContainerId);
-        newItem.setContainer(container);
-        repository.save(newItem);
-        String message = "A new item with id " + newItem.getId() + " has been created successfully";
-        facesContext.addMessage(null, new FacesMessage(message));
-        newItem = new Item();
+        try {
+            Container container = repository.findContainerById(selectedContainerId);
+            newItem.setContainer(container);
+            repository.save(newItem);
+            String message = "A new item with id " + newItem.getId() + " has been created successfully";
+            facesContext.addMessage(null, new FacesMessage(message));
+            newItem = new Item();
+        } catch (Exception e) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while creating the item.", e.getMessage()));
+        }
         return "item";
     }
     

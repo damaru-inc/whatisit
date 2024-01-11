@@ -8,7 +8,7 @@
 
         <h:form id="itemForm">
             <h2>New Item</h2>
-            <h:panelGrid columns="6" columnClasses="titleCell" width="800">
+            <h:panelGrid columns="5" columnClasses="titleCell" width="800">
                 <h:outputLabel for="name" value="Name:" />
                 <h:inputText id="name" value="#{itemController.newItem.name}" maxlength="128" size="20"/>
                 <h:outputLabel for="container" value="Container:" />
@@ -19,9 +19,6 @@
                     action="#{itemController.create}"
                     value="Add" styleClass="register">
                     </h:commandButton>
-                <h:messages styleClass="messages"
-                    errorClass="invalid" infoClass="valid"
-                    warnClass="warning" globalOnly="true" />
             </h:panelGrid>
         </h:form>
         <h2>Containers</h2>

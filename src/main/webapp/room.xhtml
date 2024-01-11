@@ -8,16 +8,13 @@
 
         <h:form id="roomForm">
             <h2>New Room</h2>
-            <h:panelGrid columns="4" columnClasses="titleCell">
+            <h:panelGrid columns="3" columnClasses="titleCell">
                 <h:outputLabel for="name" value="Name:" />
                 <h:inputText id="name" value="#{newRoom.name}" maxlength="128" size="30"/>
-                    <h:commandButton id="addRoom"
-                        action="#{roomController.create}"
-                        value="Add" styleClass="register">
-                        </h:commandButton>
-                    <h:messages styleClass="messages"
-                        errorClass="invalid" infoClass="valid"
-                        warnClass="warning" globalOnly="true" />
+                <h:commandButton id="addRoom"
+                    action="#{roomController.create}"
+                    value="Add" styleClass="register">
+                </h:commandButton>
             </h:panelGrid>
         </h:form>
         <h2>Rooms</h2>

@@ -36,8 +36,7 @@ public class RoomController {
             facesContext.addMessage(null, new FacesMessage(message));
             newRoom = new Room();
         } catch (Exception e) {
-            String message = "An error has occured while creating the room (see log for details)";
-            facesContext.addMessage(null, new FacesMessage(message));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while creating the room.", e.getMessage()));
         }
         return "room";
     }

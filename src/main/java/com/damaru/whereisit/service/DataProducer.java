@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,6 +25,9 @@ public class DataProducer {
     @Inject
     private Repository repository;
     
+    @Inject
+    private FacesContext facesContext;
+    
     private List<Container> containers;
     private List<Item> items;
     private List<Room> rooms;
@@ -30,9 +35,13 @@ public class DataProducer {
     @PostConstruct
     public void init() {
         log.info("Called init.");
-        containers = repository.findAllContainers();
-        items = repository.findAllItems();
-        rooms = repository.findAllRooms();
+        try {
+            containers = repository.findAllContainers();
+            items = repository.findAllItems();
+            rooms = repository.findAllRooms();
+        } catch (Exception e) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while fetching data.", e.getMessage()));
+        }
     }
     
     public void afterContainerUpdate(@Observes Container container) {
@@ -53,21 +62,18 @@ public class DataProducer {
     @Produces
     @Named
     public List<Container> getContainers() {
-        log.info("Called getContainers.");
         return containers;
     }
 
     @Produces
     @Named
     public List<Item> getItems() {
-        log.info("Called getContainers.");
         return items;
     }
 
     @Produces
     @Named
     public List<Room> getRooms() {
-        log.info("Called getRooms.");
         return rooms;
     }
     
