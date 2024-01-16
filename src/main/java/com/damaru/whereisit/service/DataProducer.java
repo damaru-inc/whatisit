@@ -15,6 +15,7 @@ import javax.inject.Named;
 import com.damaru.whereisit.model.Container;
 import com.damaru.whereisit.model.Item;
 import com.damaru.whereisit.model.Room;
+import com.damaru.whereisit.model.Saveable;
 
 @RequestScoped
 public class DataProducer {
@@ -44,18 +45,8 @@ public class DataProducer {
         }
     }
     
-    public void afterContainerUpdate(@Observes Container container) {
-        log.info("afterRoomUpdate " + container);
-        init();
-    }
-    
-    public void afterItemUpdate(@Observes Item item) {
-        log.info("afterItemUpdate " + item);
-        init();
-    }
-    
-    public void afterRoomUpdate(@Observes Room room) {
-        log.info("afterRoomUpdate " + room);
+    public void afterSaveableUpdate(@Observes Saveable saveable) {
+        log.info("afterSaveableUpdate " + saveable);
         init();
     }
     

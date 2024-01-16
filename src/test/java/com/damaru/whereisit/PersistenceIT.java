@@ -77,6 +77,19 @@ public class PersistenceIT {
     }
 
     @Test
+    public void testFindRoomByName() {
+        String name = "Living Room";
+        Room room = new Room();
+        room.setName(name);
+        repository.save(room);
+        assertNotNull(room.getId());
+        log.info(room.getName() + " was persisted with id " + room.getId());
+        
+        room = repository.findRoomByName(name);
+        assertEquals(name, room.getName());
+    }
+
+    @Test
     public void testSaveContainer() {
         Room room = new Room();
         room.setName("Living Room");

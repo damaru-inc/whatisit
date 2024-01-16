@@ -5,33 +5,30 @@
     xmlns:h="http://java.sun.com/jsf/html"
     template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
-
         <h:form id="roomForm">
-            <h2>New Room</h2>
-            <h:panelGrid columns="3" columnClasses="titleCell">
-                <h:outputLabel for="name" value="Name:" />
-                <h:inputText id="name" value="#{newRoom.name}" maxlength="128" size="30"/>
-                <h:commandButton id="addRoom"
-                    action="#{roomController.create}"
-                    value="Add" styleClass="register">
-                </h:commandButton>
-            </h:panelGrid>
+	        <h:panelGrid style="width: 30%">
+                <h:outputText id="msg" value="#{roomController.message}" style="display: block; height:20px;" />
+	            <h:inputText id="name" value="#{roomController.room.name}" maxlength="128" size="30"
+	                    readonly="#{not roomController.editable}" styleClass="#{roomController.editable ? 'editable' : 'readonly'}" style="width: 100%"/>
+	            <h:selectOneListbox id="list" size="10" value="#{roomController.room}"
+	                    valueChangeListener="#{roomController.valueChanged}" style="width: 100%">
+	                <f:selectItems 
+	                   value="#{rooms}"
+	                   var="room"
+	                   itemLabel="#{room.name}"
+	                   itelValue="#{room}"/>
+	                <f:converter converterId="roomConvertor"/>
+                    <f:ajax execute="@this" render="msg name" />
+	            </h:selectOneListbox>
+	        </h:panelGrid>
+	        <h:panelGrid columns="5">
+	            <h:commandButton value="New" actionListener="#{roomController.newListener}"/>
+	            <h:commandButton value="Edit" actionListener="#{roomController.editListener}"/>
+	            <h:commandButton value="Save" actionListener="#{roomController.saveListener}"/>
+	            <h:commandButton value="Delete" actionListener="#{roomController.deleteListener}" onclick="if (! confirm('Delete the room?')) return false"/>
+	            <h:commandButton value="Cancel" actionListener="#{roomController.cancelListener}" immediate="true"/>
+	        </h:panelGrid>
+	        <br />
         </h:form>
-        <h2>Rooms</h2>
-        <h:panelGroup rendered="#{empty rooms}">
-            <em>No rooms.</em>
-        </h:panelGroup>
-        <h:dataTable id="roomTable" var="room" value="#{rooms}"
-            rendered="#{not empty rooms}"
-            styleClass="simpletablestyle">
-            <h:column>
-                <f:facet name="header">Id</f:facet>
-                #{room.id}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Name</f:facet>
-                #{room.name}
-            </h:column>
-        </h:dataTable>
     </ui:define>
 </ui:composition>
