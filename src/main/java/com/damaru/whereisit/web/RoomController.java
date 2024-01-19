@@ -18,7 +18,7 @@ import com.damaru.whereisit.service.Repository;
 
 @Named
 @SessionScoped
-public class RoomController implements Serializable {
+public class RoomController extends Controller implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,42 +33,20 @@ public class RoomController implements Serializable {
     
     private Room room = new Room();
     
-    private EditAction editAction = EditAction.none;
-    
-    private boolean editable;
-    
-    private String message = " ";
-    
     public void newListener(ActionEvent e) {
         
-        if (editAction == EditAction.edit) {
+        if (getEditAction() == EditAction.edit) {
             return;
         }
         
-        setEditable(true);
         setMessage("Enter new room:");
         room = new Room();
-        editAction = EditAction.create;
+        setEditAction(EditAction.create);
     }
-    
-    /*
-    // No longer used, replaced by newListener above. 
-    public String create() {
-        try {
-            log.infof("Saving %s", room);
-            repository.save(room);
-            setMessage("A new room with id " + room.getId() + " has been created successfully");
-            room = new Room();
-        } catch (Exception e) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while creating the room.", e.getMessage()));
-        }
-        return "room";
-    }
-    */
     
     public void saveListener(ActionEvent event) {
 
-        if (editAction == EditAction.none) {
+        if (getEditAction() == EditAction.none) {
             return;
         }
 
@@ -80,8 +58,7 @@ public class RoomController implements Serializable {
                     "Updated the room." : "A new room with id " + room.getId() + " has been created successfully";
             setMessage(msg);
             select(room);
-            editAction = EditAction.none;
-            editable = false;
+            setEditAction(EditAction.none);
         } catch (Exception e) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while creating the room.", e.getMessage()));
         }
@@ -93,15 +70,13 @@ public class RoomController implements Serializable {
     
     public void cancelListener(ActionEvent e) {
 
-        if (editAction == EditAction.none) {
+        if (getEditAction() == EditAction.none) {
             setMessage("");
             return;
         }
 
         setMessage("Cancelled.");
-        editAction = EditAction.none;
-        setEditable(false);
-        
+        setEditAction(EditAction.none);
         
         if (room.isPersisted()) {
             room = repository.findRoomById(room.getId());
@@ -113,29 +88,28 @@ public class RoomController implements Serializable {
     
     public void editListener(ActionEvent e) {
 
-        if (editAction == EditAction.create) {
+        if (getEditAction() == EditAction.create) {
             return;
         }
 
-        setEditable(true);
         setMessage("Editing: ");
-        editAction = EditAction.edit;
+        setEditAction(EditAction.edit);
     }
 
     public void deleteListener(ActionEvent ev) {
         
-        log.info("deleteListener: " + editAction);
+        log.info("deleteListener: " + getEditAction());
 
-        if (editAction != EditAction.none || !room.isPersisted()) {
+        if (getEditAction() != EditAction.none || !room.isPersisted()) {
             return;
         }
         
         try {
+            String name = room.getName();
             repository.delete(room);
             room = new Room();
-            setEditable(false);
-            editAction = EditAction.none;
-            setMessage("Deleted " + room.getName());
+            setEditAction(EditAction.none);
+            setMessage("Deleted " + name);
         } catch (Exception e) {
             e.printStackTrace();
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while deleting the room.", e.getMessage()));
@@ -143,39 +117,18 @@ public class RoomController implements Serializable {
     }
 
 
-    
     public void valueChanged(ValueChangeEvent e) {
         Object newValue = e.getNewValue();
-        //message = "Value changed: " + newValue;
-        //log.info(message);
+        log.tracef("Value changed: %s", newValue);
         
         if (newValue == null) {
             return;
         }
         
-        
-        if (editAction != EditAction.none) {
-            setEditable(false);
-        }
-        
+        setEditAction(EditAction.none);
+        setMessage("");
         room = (Room) e.getNewValue();
         
-    }
-
-    public boolean getEditable() {
-        return editable;
-    }
-
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public Room getRoom() {
@@ -186,7 +139,7 @@ public class RoomController implements Serializable {
         log.debugf("setRoom: %s", room);
         
         // Don't overwrite this from the listbox if we're editing.
-        if (room != null && !editable) {
+        if (room != null && !getEditable()) {
             this.room = room;
         }
     }

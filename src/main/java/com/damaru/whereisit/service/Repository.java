@@ -74,6 +74,14 @@ public class Repository {
         return container;
     }
     
+    public Container findContainerByName(String name) {
+        String jpql = "select c from Container c where name = :name";
+        return (Container) em.createQuery(jpql)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
+    
     @SuppressWarnings("unchecked")
     public List<Container> findContainersByRoom(Room room) {
         String jpql = "select c from Container c where c.room = :room order by name";

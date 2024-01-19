@@ -9,17 +9,18 @@ import javax.faces.convert.FacesConverter;
 
 import org.jboss.logging.Logger;
 
+import com.damaru.whereisit.model.Container;
 import com.damaru.whereisit.model.Room;
 import com.damaru.whereisit.service.Repository;
 import com.damaru.whereisit.util.Resources;
 
-@FacesConverter(value="roomConvertor")
-public class RoomConverter implements Converter<Room> {
+@FacesConverter(value="containerConvertor")
+public class ContainerConverter implements Converter<Container> {
     private static final long serialVersionUID = 1L;
-    private static Logger logger = Logger.getLogger(RoomConverter.class.getName());
+    private static Logger logger = Logger.getLogger(ContainerConverter.class.getName());
     
     @Override
-    public Room getAsObject(FacesContext context, UIComponent component,
+    public Container getAsObject(FacesContext context, UIComponent component,
                                 String value)
             throws ConverterException {
         
@@ -31,29 +32,29 @@ public class RoomConverter implements Converter<Room> {
             return null;
         }
 
-        Room room = null;
+        Container container = null;
         try {
-            room = repository.findRoomByName(value);
+            container = repository.findContainerByName(value);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while converting a room.", e.getMessage()));
             e.printStackTrace();
         }
         
-        return room;
+        return container;
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component,
-            Room room)
+            Container container)
             throws ConverterException {
         
-        logger.tracef("getAsString: %s", room);
+        logger.tracef("getAsString: %s", container);
 
-        if (room == null) {
+        if (container == null) {
             return null;
         }
 
-        return room.getName();
+        return container.getName();
     }
 
 }
