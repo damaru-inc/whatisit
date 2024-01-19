@@ -1,7 +1,6 @@
 package com.damaru.whereisit.service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
@@ -14,6 +13,8 @@ import com.damaru.whereisit.model.Item;
 import com.damaru.whereisit.model.Room;
 import com.damaru.whereisit.model.Saveable;
 
+import org.jboss.logging.Logger;
+
 @Stateless
 public class Repository {
     
@@ -21,9 +22,10 @@ public class Repository {
     private static final String ENTITY_ITEM = "Item";
     private static final String ENTITY_ROOM = "Room";
 
+    
     @Inject
     private Logger log;
-
+    
     @Inject
     private EntityManager em;
     
@@ -37,7 +39,7 @@ public class Repository {
     }
     
     public void delete(Saveable saveable) {
-        log.info("Deleting " + saveable);
+        log.debugf("Deleting %s", saveable);
         saveable = em.merge(saveable);
         em.remove(saveable);
         saveableEvent.fire(saveable);
@@ -46,7 +48,7 @@ public class Repository {
     private void deleteTable(String tableName) {
         Query query = em.createQuery("delete from " + tableName);
         int deleted = query.executeUpdate();
-        log.info(String.format("Deleted %d rows from %s", deleted, tableName));
+        log.infof("Deleted %d rows from %s", deleted, tableName);
     }
     
     @SuppressWarnings("unchecked")
@@ -98,20 +100,22 @@ public class Repository {
 
     public void save(Saveable saveable) {
         
-        log.info("Saving " + saveable);
+        log.infof("Saving %s", saveable);
         if (saveable.isPersisted()) {
-            log.info("Merging " + saveable);
+            log.debugf("Merging %s", saveable);
             em.merge(saveable);
         } else {
-            log.info("Persisting " + saveable);
+            log.debugf("Persisting %s", saveable);
             em.persist(saveable);
         }
-                saveableEvent.fire(saveable);
-        log.info("Saved " + saveable);
+        
+        saveableEvent.fire(saveable);
+        log.infof("Saved %s", saveable);
     }
 
     @SuppressWarnings("unchecked")
     public List<Item> searchItems(String searchString) {
+        log.debugf("searchString: %s", searchString);
         String search = "%" + searchString.toLowerCase() + "%";
         String jpql = "select i from Item i where lower(name) like :search order by name";
         return em.createQuery(jpql)

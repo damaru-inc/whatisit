@@ -1,13 +1,13 @@
 package com.damaru.whereisit.web;
 
-import java.util.logging.Logger;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+
+import org.jboss.logging.Logger;
 
 import com.damaru.whereisit.model.Room;
 import com.damaru.whereisit.service.Repository;
@@ -16,14 +16,14 @@ import com.damaru.whereisit.util.Resources;
 @FacesConverter(value="roomConvertor")
 public class RoomConverter implements Converter<Room> {
     private static final long serialVersionUID = 1L;
-    private static Logger logger = Logger.getLogger("RoomConverter");
+    private static Logger logger = Logger.getLogger(RoomConverter.class.getName());
     
     @Override
     public Room getAsObject(FacesContext context, UIComponent component,
                                 String value)
             throws ConverterException {
         
-//        logger.info("getAsObject: " + value);
+        logger.tracef("getAsObject: %s", value);
         
         Repository repository = Resources.lookup(Repository.class);
 
@@ -48,7 +48,7 @@ public class RoomConverter implements Converter<Room> {
             Room room)
             throws ConverterException {
         
-//        logger.info("getAsString: " + room);
+        logger.tracef("getAsString: %s", room);
 
         if (room == null) {
             return null;

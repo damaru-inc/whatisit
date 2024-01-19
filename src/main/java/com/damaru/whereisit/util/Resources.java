@@ -1,6 +1,5 @@
 package com.damaru.whereisit.util;
 
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
@@ -11,10 +10,12 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.jboss.logging.Logger;
+
 public class Resources {
     
     private static final String EJB_CONTEXT;
-    private static Logger logger = Logger.getLogger("Resources");
+    private static Logger logger = Logger.getLogger(Resources.class.getName());
 
 
     static {

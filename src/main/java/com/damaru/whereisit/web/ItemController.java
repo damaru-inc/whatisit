@@ -1,12 +1,13 @@
 package com.damaru.whereisit.web;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+
+import org.jboss.logging.Logger;
 
 import com.damaru.whereisit.model.Container;
 import com.damaru.whereisit.model.Item;
@@ -33,7 +34,7 @@ public class ItemController {
     private String searchString;
     
     public String create() {
-        log.info("Saving item " + newItem + " with containerId " + selectedContainerId);
+        log.infof("Saving item %s with containerId %d", newItem, selectedContainerId);
         try {
             Container container = repository.findContainerById(selectedContainerId);
             newItem.setContainer(container);

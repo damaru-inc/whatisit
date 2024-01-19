@@ -98,6 +98,13 @@
             <artifactId>jboss-transaction-api_1.3_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>junit</groupId>
@@ -178,6 +185,9 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
+                        <manifestEntries>
+                            <Logging-Profile>whereisit-logging-profile</Logging-Profile>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>

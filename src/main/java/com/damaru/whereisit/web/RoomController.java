@@ -1,7 +1,6 @@
 package com.damaru.whereisit.web;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -10,6 +9,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.jboss.logging.Logger;
 
 import com.damaru.whereisit.model.EditAction;
 import com.damaru.whereisit.model.Room;
@@ -50,10 +51,11 @@ public class RoomController implements Serializable {
         editAction = EditAction.create;
     }
     
+    /*
     // No longer used, replaced by newListener above. 
     public String create() {
         try {
-            log.info("Saving " + room);
+            log.infof("Saving %s", room);
             repository.save(room);
             setMessage("A new room with id " + room.getId() + " has been created successfully");
             room = new Room();
@@ -62,6 +64,7 @@ public class RoomController implements Serializable {
         }
         return "room";
     }
+    */
     
     public void saveListener(ActionEvent event) {
 
@@ -70,7 +73,7 @@ public class RoomController implements Serializable {
         }
 
         try {
-            log.info("Saving " + room);
+            log.infof("Saving %s", room);
             boolean isPersisted = room.isPersisted();
             repository.save(room);
             String msg = isPersisted ? 
@@ -180,7 +183,7 @@ public class RoomController implements Serializable {
     }
 
     public void setRoom(Room room) {
-        log.info("setRoom: " + room);
+        log.debugf("setRoom: %s", room);
         
         // Don't overwrite this from the listbox if we're editing.
         if (room != null && !editable) {

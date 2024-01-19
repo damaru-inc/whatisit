@@ -1,7 +1,6 @@
 package com.damaru.whereisit.service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -11,6 +10,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.jboss.logging.Logger;
 
 import com.damaru.whereisit.model.Container;
 import com.damaru.whereisit.model.Item;
@@ -35,7 +36,7 @@ public class DataProducer {
     
     @PostConstruct
     public void init() {
-        log.info("Called init.");
+        log.debug("Called init.");
         try {
             containers = repository.findAllContainers();
             items = repository.findAllItems();
@@ -46,7 +47,7 @@ public class DataProducer {
     }
     
     public void afterSaveableUpdate(@Observes Saveable saveable) {
-        log.info("afterSaveableUpdate " + saveable);
+        log.debug("afterSaveableUpdate " + saveable);
         init();
     }
     
