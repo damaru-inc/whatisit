@@ -3,3 +3,6 @@
 /subsystem=logging/logging-profile=whereisit-logging-profile/file-handler=whereisit-file:write-attribute(name="level", value="DEBUG")
 /subsystem=logging/logging-profile=whereisit-logging-profile/logger=com.damaru.whereisit:add(level=DEBUG)
 /subsystem=logging/logging-profile=whereisit-logging-profile/logger=com.damaru.whereisit:add-handler(name="whereisit-file")
+/subsystem=logging/logging-profile=whereisit-logging-profile/root-logger=ROOT:add
+/subsystem=logging/logging-profile=whereisit-logging-profile/root-logger=ROOT:write-attribute(name="level", value="INFO")
+/subsystem=logging/logging-profile=whereisit-logging-profile/root-logger=ROOT:add-handler(name="whereisit-file")

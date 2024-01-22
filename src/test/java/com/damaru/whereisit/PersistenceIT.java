@@ -79,8 +79,8 @@ public class PersistenceIT {
             pen.setContainer(desk);
             repository.save(pen);
         }
+
         List<Item> items = repository.searchItems("abc");
-        items.stream().close();
         log.info("Results: " + items);
     }
 

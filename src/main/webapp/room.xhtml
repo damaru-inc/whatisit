@@ -6,17 +6,19 @@
     template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
         <h:form id="roomForm">
+            <h2>Rooms</h2>
 	        <h:panelGrid style="width: 30%">
                 <h:outputText id="msg" value="#{roomController.message}" style="display: block; height:20px;" />
+                <h:outputText value="Edit" rendered="#{roomContoller.editable}"/>
 	            <h:inputText id="name" value="#{roomController.room.name}" maxlength="128" size="30"
-	                    readonly="#{not roomController.editable}" styleClass="#{roomController.editable ? 'editable' : 'readonly'}" style="width: 100%"/>
+	                    readonly="#{not roomController.editable}" styleClass="#{roomController.editable ? 'editable' : 'readonly'}" style="width: 98%"/>
 	            <h:selectOneListbox id="list" size="10" value="#{roomController.room}"
 	                    valueChangeListener="#{roomController.valueChanged}" style="width: 100%">
 	                <f:selectItems 
 	                   value="#{rooms}"
 	                   var="room"
 	                   itemLabel="#{room.name}"
-	                   itelValue="#{room}"/>
+	                   itemValue="#{room}"/>
 	                <f:converter converterId="roomConvertor"/>
                     <f:ajax execute="@this" render="msg name" />
 	            </h:selectOneListbox>

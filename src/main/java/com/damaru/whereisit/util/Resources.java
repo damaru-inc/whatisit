@@ -48,7 +48,7 @@ public class Resources {
             
             InitialContext initialContext = new InitialContext();
             String jndiName = EJB_CONTEXT + ejbClass.getSimpleName();
-            logger.info("lookup " + jndiName);
+            logger.tracef("lookup %s", jndiName);
             // Do not use ejbClass.cast(). It will fail on local/remote interfaces.
             return (T) initialContext.lookup(jndiName);
         } catch (NamingException e) {

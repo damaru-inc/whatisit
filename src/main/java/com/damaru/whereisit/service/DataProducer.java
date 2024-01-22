@@ -36,7 +36,7 @@ public class DataProducer {
     
     @PostConstruct
     public void init() {
-        log.debug("Called init.");
+        log.trace("Called init.");
         try {
             containers = repository.findAllContainers();
             items = repository.findAllItems();

@@ -5,7 +5,39 @@
     xmlns:h="http://java.sun.com/jsf/html"
     template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
+        <h:form id="containerForm">
+            <h2>Containers</h2>
+            <h:panelGrid style="width: 30%">
+                <h:outputText id="msg" value="#{containerController.message}" style="display: block; height:20px;" />
+                <h:inputText id="name" value="#{containerController.container.name}" maxlength="128" size="30"
+                        readonly="#{not containerController.editable}" styleClass="#{containerController.editable ? 'editable' : 'readonly'}" style="width: 98%"/>
+                <h:selectOneMenu id="room" value="#{containerController.selectedRoom}" styleClass="roomSelector" rendered="#{containerController.editable}">
+                    <f:selectItems value="#{rooms}" var="room" itemValue="#{room}" itemLabel="#{room.name}"/>
+                    <f:converter converterId="roomConvertor"/>
+                </h:selectOneMenu>
+                <h:selectOneListbox id="list" size="10" value="#{containerController.container}"
+                        valueChangeListener="#{containerController.valueChanged}" style="width: 100%">
+                    <f:selectItems 
+                       value="#{containers}"
+                       var="container"
+                       itemLabel="#{container.fullName}"
+                       itemValue="#{container}"/>
+                    <f:converter converterId="containerConvertor"/>
+                    <f:ajax execute="@this" render="msg name" />
+                </h:selectOneListbox>
+            </h:panelGrid>
+            <h:panelGrid columns="5">
+                <h:commandButton value="New" actionListener="#{containerController.newListener}"/>
+                <h:commandButton value="Edit" actionListener="#{containerController.editListener}"/>
+                <h:commandButton value="Save" actionListener="#{containerController.saveListener}"/>
+                <h:commandButton value="Delete" actionListener="#{containerController.deleteListener}" onclick="if (! confirm('Delete the container?')) return false"/>
+                <h:commandButton value="Cancel" actionListener="#{containerController.cancelListener}" immediate="true"/>
+            </h:panelGrid>
+        
+        </h:form>
 
+
+    <ui:remove>
         <h:form id="containerForm">
             <h2>New Container</h2>
             <h:panelGrid columns="5" columnClasses="titleCell" width="800">
@@ -41,5 +73,6 @@
                 #{container.room.name}
             </h:column>
         </h:dataTable>
+    </ui:remove>
     </ui:define>
 </ui:composition>

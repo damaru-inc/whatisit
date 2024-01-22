@@ -60,7 +60,7 @@ public class RoomController extends Controller implements Serializable {
             select(room);
             setEditAction(EditAction.none);
         } catch (Exception e) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while creating the room.", e.getMessage()));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while saving the room.", e.getMessage()));
         }
     }
 

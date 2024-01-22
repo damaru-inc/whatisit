@@ -123,7 +123,7 @@ public class Repository {
 
     @SuppressWarnings("unchecked")
     public List<Item> searchItems(String searchString) {
-        log.debugf("searchString: %s", searchString);
+        log.tracef("searchString: %s", searchString);
         String search = "%" + searchString.toLowerCase() + "%";
         String jpql = "select i from Item i where lower(name) like :search order by name";
         return em.createQuery(jpql)

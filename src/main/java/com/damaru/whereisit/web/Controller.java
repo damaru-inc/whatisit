@@ -1,15 +1,22 @@
 package com.damaru.whereisit.web;
 
+import org.jboss.logging.Logger;
+
 import com.damaru.whereisit.model.EditAction;
 
 public class Controller {
+    
+    private static Logger logger = Logger.getLogger(Controller.class.getName());
 
     private EditAction editAction = EditAction.none;
     
     private String message = "";
     
     public boolean getEditable() {
-        return editAction == EditAction.create || editAction == EditAction.edit;
+        boolean ret = editAction == EditAction.create || editAction == EditAction.edit;
+        logger.tracef("getEditable: action is %s, ret is %s", editAction, ret);
+        //return editAction == EditAction.create || editAction == EditAction.edit;
+        return ret;
     }
 
     public EditAction getEditAction() {
