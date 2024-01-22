@@ -36,23 +36,6 @@ public class ContainerController extends Controller implements Serializable {
     
     private Room selectedRoom;
         
-    /*
-    public String create() {
-        try {
-            log.infof("Saving %s with selectedRoomId %d", newContainer, selectedRoomId);
-            Room room = repository.findRoomById(selectedRoomId);
-            newContainer.setRoom(room);
-            repository.save(newContainer);
-            String message = "A new container with id " + newContainer.getId() + " has been created successfully";
-            facesContext.addMessage(null, new FacesMessage(message));
-            newContainer = new Container();
-        } catch (Exception e) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred while creating the container.", e.getMessage()));
-        }
-        return "container";
-    }
-    */
-    
     public void newListener(ActionEvent e) {
         
         if (getEditAction() == EditAction.edit) {
@@ -79,7 +62,6 @@ public class ContainerController extends Controller implements Serializable {
             }
             
             container.setRoom(selectedRoom);
-            boolean isPersisted = container.isPersisted();        
             repository.save(container);
             setMessage("Saved.");
             setEditAction(EditAction.none);
@@ -158,7 +140,7 @@ public class ContainerController extends Controller implements Serializable {
     }
 
     public void setContainer(Container container) {
-        log.infof("setContainer: %s", container);
+        log.tracef("setContainer: %s", container);
         // Don't overwrite this from the listbox if we're editing.
         if (container != null && !getEditable()) {
             this.container = container;

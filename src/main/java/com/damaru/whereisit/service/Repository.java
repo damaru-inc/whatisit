@@ -90,6 +90,18 @@ public class Repository {
                 .getResultList();
     }
     
+    public Item findItemById(Long id) {
+        Item item = em.find(Item.class, id);
+        return item;
+    }
+    
+    public Item findItemByName(String name) {
+        String jpql = "select i from Item i where name = :name";
+        return (Item) em.createQuery(jpql)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
     public Room findRoomById(Long selectedRoomId) {
         Room room = em.find(Room.class, selectedRoomId);
         return room;

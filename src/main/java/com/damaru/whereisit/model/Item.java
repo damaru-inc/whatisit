@@ -38,6 +38,10 @@ public class Item implements Saveable {
         this.id = id;
     }
 
+    public String getFullName() {
+        return String.format("[Item %3d %s in %s]", id, name, (container == null ? "Null container" : container.toString()));
+    }
+
     public String getName() {
         return name;
     }
@@ -56,7 +60,7 @@ public class Item implements Saveable {
 
     @Override
     public String toString() {
-        return String.format("[Item %3d %s in %s]", id, name, (container == null ? "Null container" : container.toString()));
+        return getFullName();
     }
 
     @Override

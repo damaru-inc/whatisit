@@ -52,11 +52,8 @@ public class RoomController extends Controller implements Serializable {
 
         try {
             log.infof("Saving %s", room);
-            boolean isPersisted = room.isPersisted();
             repository.save(room);
-            String msg = isPersisted ? 
-                    "Updated the room." : "A new room with id " + room.getId() + " has been created successfully";
-            setMessage(msg);
+            setMessage("Saved");
             select(room);
             setEditAction(EditAction.none);
         } catch (Exception e) {
@@ -136,7 +133,7 @@ public class RoomController extends Controller implements Serializable {
     }
 
     public void setRoom(Room room) {
-        log.debugf("setRoom: %s", room);
+        log.tracef("setRoom: %s", room);
         
         // Don't overwrite this from the listbox if we're editing.
         if (room != null && !getEditable()) {
